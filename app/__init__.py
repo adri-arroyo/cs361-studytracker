@@ -19,8 +19,8 @@ db = SQLAlchemy(app)
 
 class StudyLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    studyhours = db.Column(db.Integer, nullable=False)
-    date = db.Column(db.DateTime(timezone=True), nullable=False)
+    studyhours = db.Column(db.Numeric(12, 2), nullable=False)
+    date = db.Column(db.Date, nullable=False)
     classname = db.Column(db.String(25), unique=False, nullable=True)
     comment = db.Column(db.String(50), unique=False, nullable=True)
     created_at = db.Column(db.DateTime(timezone=True),
@@ -31,6 +31,7 @@ class StudyLog(db.Model):
         return f'<StudyLog {self.id}>'
 
 # ! ---------------------- ROUTES ---------------------- !
+date_format = "%Y-%m-%d"
 
 @app.route('/')
 @app.route('/index')
@@ -40,12 +41,11 @@ def index():
 
 @app.route('/submit_hours', methods=('GET', 'POST'))
 def create():
-    date_format = "%Y-%m-%d"
 
     if request.method == 'POST':
-        studyhours = int(request.form['studyhours'])
+        studyhours = float(request.form['studyhours'])
         date_string = request.form['date']
-        date = datetime.strptime(date_string, date_format)
+        date = datetime.strptime(date_string, date_format).date()
         classname = request.form['classname']
         comment = request.form['comment']
         studylog = StudyLog(studyhours=studyhours,
@@ -57,3 +57,33 @@ def create():
 
         return redirect(url_for('index'))
     return render_template('submit_hours.html')
+
+@app.route('/edit_hours/<int:log_id>', methods=('GET', 'POST'))
+def edit(log_id):
+    studylog = StudyLog.query.get_or_404(log_id)
+
+    if request.method == 'POST':
+        studyhours = float(request.form['studyhours'])
+        date_string = request.form['date']
+        date = datetime.strptime(date_string, date_format).date()
+        classname = request.form['classname']
+        comment = request.form['comment']
+
+        studylog.studyhours = studyhours
+        studylog.date = date
+        studylog.classname = classname
+        studylog.comment = comment
+
+        db.session.add(studylog)
+        db.session.commit()
+
+        return redirect(url_for('index'))
+
+    return render_template('edit_hours.html', studylog=studylog)
+
+@app.post('/delete_hours/<int:log_id>')
+def delete(log_id):
+    studylog = StudyLog.query.get_or_404(log_id)
+    db.session.delete(studylog)
+    db.session.commit()
+    return redirect(url_for('index'))

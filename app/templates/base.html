@@ -23,18 +23,46 @@
                 <div class="col"><p><!-- space --></p></div>
             </div>
             
-            <div class="row" style="background-color: #cfa57e;">
+            <div class="row">
                 <div class="col-3" style="background-color: #4e1f00; color: white"><h2>STUDY TRACKER</h2></div>
                 <div class="col-1" style="background-color: rgb(255, 255, 255);"><p><!-- <p>space</p> --></p></div>
-                <div class="col">HOME</div>
-                <div class="col">ALL CLASSES</div>
-                <div class="col">REPORTS</div>
-                <div class="col">COUNTDOWNS</div>
+                <div class="col">
+                    <a href="/index">
+                        <button type="button" class="btn btn-warning btn-lg">
+                            HOME
+                        </button>
+                    </a>
+                </div>
+
+                <div class="col">
+                    <a href="/view_classes">
+                        <button type="button" class="btn btn-warning btn-lg">
+                            ALL CLASSES
+                        </button>
+                    </a>
+                </div>
+
+                <div class="col">
+                    <a href="/view_reports">
+                        <button type="button" class="btn btn-warning btn-lg">
+                            REPORTS
+                        </button>
+                    </a>
+                </div>
+                
+                <div class="col">
+                    <a href="/view_countdowns">
+                        <button type="button" class="btn btn-warning btn-lg">
+                            COUNTDOWNS
+                        </button>
+                    </a>
+                </div>
+
             </div>
             <div class="row">
                 <div class="col"><p><!-- space --></p></div>
             </div>
-            <div class="row" style="background-color: #f0e8e0;">
+            <div class="row">
                 <div class="col-3">
                     {% block sidebar %}{% endblock %}
 
@@ -44,11 +72,21 @@
                     <p><!-- <p>space</p> --></p>
                 </div>
                 
-                <div class="col-8" style="background-color: #f0e8e0;">
+                <div class="col-8">
                     {% block content %}{% endblock %}
                 </div>
             </div>
+            
+            <div class="row">
+                <div class="col"><p><!-- space --></p></div>
+            </div>
+            
+            <div class="row">
+                <div class="col"><p>(c) 2025 Adriana Arroyo Fernandez</p></div>
+            </div>
+        
         </div>
         
+
     </body>
 </html>
