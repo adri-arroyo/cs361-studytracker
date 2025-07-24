@@ -1,1 +1,0 @@
-# This is a test file for Commit #2 of CS361 Assignment 02
