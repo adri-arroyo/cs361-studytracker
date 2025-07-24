@@ -1,0 +1,27 @@
+
+<!-- <h3 class="title">{% block title %} Study Log Table {% endblock %}</h3> -->
+    <div class="content">
+        <!-- DEFINE TABLE HEADERS -->
+        <div class="row" style="background-color: #74512d; color: white">
+                <div class="col" style="border: 5px solid #4e1f00;">CLASS NAME</div>
+                <div class="col" style="border: 5px solid #4e1f00;">HOURS SPENT</div>
+                <div class="col" style="border: 5px solid #4e1f00;">DATE</div>
+                <div class="col" style="border: 5px solid #4e1f00;">COMMENT</div>
+                <div class="col" style="border: 5px solid #4e1f00;">ACTION</div>
+        </div>
+        {% for studylogentry in studylog %}
+        <div class="row" style="background-color: white;">
+                <div class="col" style="border: 5px solid #4e1f00;">{{ studylogentry.classname }}</div>
+                <div class="col" style="border: 5px solid #4e1f00;">{{ studylogentry.studyhours }}</div>
+                <div class="col" style="border: 5px solid #4e1f00;">{{ studylogentry.date }}</div>
+                <div class="col" style="border: 5px solid #4e1f00;">{{ studylogentry.comment }}</div>
+                <div class="col" style="border: 5px solid #4e1f00;">
+                    <p>
+                        <span class="material-symbols-outlined">edit</span>
+                        <span class="material-symbols-outlined">delete</span>
+                    </p>
+
+                </div>
+        </div>
+        {% endfor %}
+    </div>

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+    <div class="row" style="background-color: #4e1f00; color: white;">
+        <h3>WELCOME TO STUDY TRACKER</h3>
+    </div>
+
+    <div class="row" style="border: 5px solid #4e1f00;">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
+        ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+
+    <div class="row" style="background-color: rgb(255, 255, 255);">
+        <p><!-- <p>space</p> --></p>
+    </div>
+
+    <div class="row" style="background-color: #4e1f00; color: white">
+        <h3>HOW TO USE</h3>
+    </div>
+
+    <div class="row" style="border: 5px solid #4e1f00;">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
+        ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <h2>This is your Study Log!</h2>
+    </div>
+    
+    <div class="row">
+        <p><!-- space --></p>
+    </div> 
+
+    <div class="row">
+
+        {% include "display_table.html" %}
+
+    </div>
+
+    <div class="row" style="background-color: rgb(255, 255, 255);">
+        <p><!-- space --></p>
+    </div> 
+
+    <div class="row" >
+        <div class="col" style="background-color: #e49d62;border: 5px solid #4e1f00;">BUTTON 1</div>
+        <div class="col" >Filter by:</div>
+        <div class="col" style="background-color: #d2b99e;border: 5px solid #4e1f00;">BUTTON 2</div>
+        <div class="col" style="background-color: #d2b99e;border: 5px solid #4e1f00;">BUTTON 3</div>
+    </div>
+
+    <div class="row" style="background-color: rgb(255, 255, 255);">
+        <p><!-- space --></p>
+    </div> 
+
+    <div class="row" style="background-color: rgb(79, 81, 155); color: white">
+        <h3>Current Classes</h3>
+    </div>
+
+    <div class="row" style="background-color: rgb(171, 194, 170);">
+        {% for post in posts %}
+            <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
+        {% endfor %}
+    </div>
+{% endblock %}

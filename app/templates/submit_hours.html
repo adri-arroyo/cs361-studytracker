@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+    <div class="row" style="background-color: #4e1f00; color: white;">
+        <h3>WELCOME TO STUDY TRACKER</h3>
+    </div>
+
+    <div class="row" style="border: 8px solid #4e1f00;">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
+        ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+    
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="row" style="background-color: rgb(178, 144, 207); color: white">
+        <h1 style="width: 100%">{% block title %} ADD STUDY HOURS TO YOUR STUDY LOG {% endblock %}</h1>
+    <form method="post">
+        <p>
+            <label for="number">Study Hours:</label>
+            <input type="number" name="studyhours"
+                   placeholder="Study Hours">
+            </input>
+        </p>
+
+        <p>
+            <label for="date">Date:</label>
+            <input type="date" name="date"
+                   placeholder="Date">
+            </input>
+        </p>
+
+        <p>
+            <label for="text">Class Name</label>
+            <input type="text" name="classname"
+                   placeholder="Class Name (Optional)">
+            </input>
+        </p>
+
+        <p>
+            <label for="text">Comment</label>
+            <input type="text" name="comment"
+                   placeholder="Comment (Optional)">
+            </input>
+        </p>
+
+        <p>
+            <button type="submit">Submit</button>
+        </p>
+    </form>
+    </div>
+
+{% endblock %}
