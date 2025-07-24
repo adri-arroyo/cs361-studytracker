@@ -8,7 +8,7 @@ from sqlalchemy.sql import func
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='./static')
 app.config.from_object(Config)
 
 app.config['SQLALCHEMY_DATABASE_URI'] =\
@@ -39,6 +39,41 @@ def index():
     studylog = StudyLog.query.all()
     return render_template('index.html', studylog=studylog, title='Home')
 
+@app.route('/index/sort_by_date_desc', methods=('GET', 'POST'))
+def sort_by_date_desc():
+    studylog = StudyLog.query.order_by(StudyLog.date.desc()).all()
+    return render_template('index.html', studylog=studylog, title='Home')
+
+@app.route('/index/sort_by_date_asc', methods=('GET', 'POST'))
+def sort_by_date_asc():
+    studylog = StudyLog.query.order_by(StudyLog.date.asc()).all()
+    return render_template('index.html', studylog=studylog, title='Home')
+
+@app.route('/index/sort_by_hrs_desc', methods=('GET', 'POST'))
+def sort_by_hrs_desc():
+    studylog = StudyLog.query.order_by(StudyLog.studyhours.desc()).all()
+    return render_template('index.html', studylog=studylog, title='Home')
+
+@app.route('/index/sort_by_hrs_asc', methods=('GET', 'POST'))
+def sort_by_hrs_asc():
+    studylog = StudyLog.query.order_by(StudyLog.studyhours.asc()).all()
+    return render_template('index.html', studylog=studylog, title='Home')
+
+@app.route('/index/sort_by/<int:class_name>', methods=('GET', 'POST'))
+def sort_by_class_name(class_name):
+    studylog = StudyLog.query.get_or_404(class_name)
+
+    if request.method == 'POST':
+        studylog = StudyLog.query.filter_by(classname=class_name).all()
+        return render_template('index.html', studylog=studylog, title='Home')
+    
+    studylog = StudyLog.query.all()
+    return render_template('index.html', studylog=studylog)
+
+
+
+
+
 @app.route('/submit_hours', methods=('GET', 'POST'))
 def create():
 
@@ -56,7 +91,7 @@ def create():
         db.session.commit()
 
         return redirect(url_for('index'))
-    return render_template('submit_hours.html')
+    return render_template('submit_hours.html', title='Add Study Hours')
 
 @app.route('/edit_hours/<int:log_id>', methods=('GET', 'POST'))
 def edit(log_id):
@@ -79,7 +114,7 @@ def edit(log_id):
 
         return redirect(url_for('index'))
 
-    return render_template('edit_hours.html', studylog=studylog)
+    return render_template('edit_hours.html', title='Edit Study Hours', studylog=studylog)
 
 @app.post('/delete_hours/<int:log_id>')
 def delete(log_id):

@@ -3,13 +3,23 @@
 {% block sidebar %}
 
     <div class="row" style="background-color: #4e1f00; color: white;">
-        <h3>WELCOME TO STUDY TRACKER</h3>
+        <h3 style="margin: auto; padding-top: 3%; padding-bottom: 2%;">HOW TO <br> ADD STUDY HOURS</h3>
     </div>
 
-    <div class="row" style="border: 8px solid #4e1f00;">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
-        ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <div class="row" style="border: 8px solid #4e1f00; background-color: #f0e8e0; text-align: justify;">
+        <p> <br>Add hours to your <b>Study Log</b> by completing all the <b>required fields</b> on the page. 
+            Click the <b>Submit</b> button once you are finished.<br><br>
+
+
+            The Class Name and Comment fields are <b><i>OPTIONAL</i></b>.<br><br>
+
+            Completing the <b>Class Name</b> field will allow you to categorize your entries 
+            per class that you are taking.<br><br>
+
+
+            <i>Don't see the name of one of your classes? Head over to the "All Classes" menu to
+            add the class.</i>
+        </p>
     </div>
     
 
@@ -17,37 +27,98 @@
 
 {% block content %}
 
-    <div class="row" style="background-color: rgb(178, 144, 207); color: white">
-        <h1 style="width: 100%">{% block title %} ADD STUDY HOURS TO YOUR STUDY LOG {% endblock %}</h1>
+    <div class="row" style="background-color: #4e1f00; color: white; ">
+        <h1 style="margin: auto; padding-top: 1%; padding-bottom: 1%;">{% block title %} ADD STUDY HOURS{% endblock %}</h1>
+        </div>
+    <div class="row" style="border: 8px solid #4e1f00; background-color: #f0e8e0;">
+        <p></p>
+        <br>
+        <p></p>
     <form method="post">
-        <p>
-            <label for="number">Study Hours:</label>
-            <input type="number" step="0.25" min="0" max="24" name="studyhours"
-                   placeholder="e.g. 3.25">
-        </p>
+        <div class="row align-items-center">
+            <div class="col-1"></div>
+            <div class="col">
+                <label for="number"><b>STUDY HOURS <br>(IN INCREMENTS OF 0.25):</b></label>
+            </div>
 
-        <p>
-            <label for="date">Date:</label>
-            <input type="date" name="date"
-                   placeholder="YYYY/MM/DD">
-        </p>
+            <div class="col">
+                <input type="number" class="form-control" step="0.25" min="0" max="24" name="studyhours"
+                   placeholder="e.g. 3.25" required>
+            </div>
+            <div class="col-2"></div>
+        </div>
 
-        <p>
-            <label for="text">Class Name</label>
-            <input type="text" name="classname"
+        <div class="row">
+                <div class="col"><p><!-- space --></p></div>
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-1"></div>
+            <div class="col">
+                <label for="date"><b>DATE :</b></label>
+            
+            </div>
+
+            <div class="col">
+                <input type="date" class="form-control" name="date" placeholder="YYYY/MM/DD" required>
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        <div class="row">
+                <div class="col"><p><!-- space --></p></div>
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-1"></div>
+            <div class="col">
+                <label for="number"><b>CLASS NAME :</b></label>
+            </div>
+
+            <div class="col">
+                <input type="text" class="form-control" name="classname"
                    placeholder="Class Name (Optional)">
-        </p>
+            </div>
+            <div class="col-2"></div>
+        </div>
 
-        <p>
-            <label for="text">Comment</label>
-            <input type="text" name="comment"
+        <div class="row">
+            <div class="col-2"></div>
+                <div class="col"><p><!-- space --></p></div>
+        </div>
+
+        <div class="row align-items-center" style="margin-bottom: 5%;">
+            <div class="col-1"></div>
+            <div class="col">
+                <label for="number"><b>COMMENTS :</b></label>
+            </div>
+
+            <div class="col">
+                <input type="text" class="form-control" name="comment"
                    placeholder="Comment (Optional)">
-        </p>
-
-        <p>
-            <button type="submit">Submit</button>
-        </p>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <button type="submit" class="btn btn-dark btn-lg" style="margin-bottom: 5%;">Submit</button>
     </form>
+    </div>
+    <div class="row"><p></p></div>
+    <div class="row align-items-center">
+        <div class="col">
+            <a href="/index">
+                <button type="button btn" class="btn btn-secondary">
+                    RETURN TO HOME PAGE
+                </button>
+            </a>
+        </div>
+
+        <div class="col">
+            <a href="/view_classes">
+                <button type="button btn" class="btn btn-secondary">
+                    MY CLASSES
+                </button>
+            </a>
+        </div>
     </div>
 
 {% endblock %}

@@ -3,17 +3,23 @@
 {% block sidebar %}
 
     <div class="row" style="background-color: #4e1f00; color: white;">
-        <h3>WELCOME TO STUDY TRACKER</h3>
+        <h3 style="margin: auto; padding-top: 3%; padding-bottom: 2%;">HOW TO <br> ADD STUDY HOURS</h3>
     </div>
 
-    <div class="row" style="border: 8px solid #4e1f00; text-align: justify">
-        <p> Edit the information you wish to change and click the “Save Changes” 
+    <div class="row" style="border: 8px solid #4e1f00; background-color: #f0e8e0; text-align: justify;">
+        <p> <br>Edit the information you wish to change and click the <b>Save Changes</b>
             button once you are finished to save your changes.<br><br>
 
-            The Class Name and Comment fields are OPTIONAL.<br><br>
 
-            Removing the class name will cause the entry to no longer appear when 
-            filtering the Study Log for that class.<br>
+            The Class Name and Comment fields are <b><i>OPTIONAL</i></b>.<br><br>
+
+            Completing the <b>Class Name</b> field will allow you to categorize your entries 
+            per class that you are taking. On the other hand, removing the class name will 
+            cause the entry to no longer appear when filtering the Study Log for that class.<br><br>
+
+
+            <i>Don't see the name of one of your classes? Head over to the "All Classes" menu to
+            add the class.</i>
         </p>
     </div>
     
@@ -22,37 +28,98 @@
 
 {% block content %}
 
-    <div class="row" style="background-color: rgb(178, 144, 207); color: white">
-        <h1 style="width: 100%">{% block title %} EDIT STUDY HOURS ENTRY {% endblock %}</h1>
+    <div class="row" style="background-color: #4e1f00; color: white; ">
+        <h1 style="margin: auto; padding-top: 1%; padding-bottom: 1%;">{% block title %} EDIT STUDY HOURS{% endblock %}</h1>
+        </div>
+    <div class="row" style="border: 8px solid #4e1f00; background-color: #f0e8e0;">
+        <p></p>
+        <br>
+        <p></p>
     <form method="post">
-        <p>
-            <label for="number">Study Hours:</label>
-            <input type="number" step="0.25" min="0" max="24" name="studyhours"
-                   placeholder="e.g. 3.25" value="{{ studylog.studyhours  }}">
-        </p>
+        <div class="row align-items-center">
+            <div class="col-1"></div>
+            <div class="col">
+                <label for="number"><b>STUDY HOURS <br>(IN INCREMENTS OF 0.25):</b></label>
+            </div>
 
-        <p>
-            <label for="date">Date:</label>
-            <input type="date" name="date" placeholder="Date" value={{ studylog.date  }}>
+            <div class="col">
+                <input type="number" class="form-control" step="0.25" min="0" max="24" name="studyhours"
+                   placeholder="e.g. 3.25" value="{{ studylog.studyhours  }}" required>
+            </div>
+            <div class="col-2"></div>
+        </div>
 
-        </p>
+        <div class="row">
+                <div class="col"><p><!-- space --></p></div>
+        </div>
 
-        <p>
-            <label for="text">Class Name</label>
-            <input type="text" name="classname" placeholder="Class Name (Optional)" value="{{ studylog.classname  }}">
+        <div class="row align-items-center">
+            <div class="col-1"></div>
+            <div class="col">
+                <label for="date"><b>DATE :</b></label>
+            
+            </div>
 
-        </p>
+            <div class="col">
+                <input type="date" class="form-control" name="date" placeholder="YYYY/MM/DD" value={{ studylog.date  }} required>
+            </div>
+            <div class="col-2"></div>
+        </div>
 
-        <p>
-            <label for="text">Comment</label>
-            <input type="text" name="comment" placeholder="Comment (Optional)" value="{{ studylog.comment  }}">
+        <div class="row">
+                <div class="col"><p><!-- space --></p></div>
+        </div>
 
-        </p>
+        <div class="row align-items-center">
+            <div class="col-1"></div>
+            <div class="col">
+                <label for="number"><b>CLASS NAME :</b></label>
+            </div>
 
-        <p>
-            <button type="submit">Submit</button>
-        </p>
+            <div class="col">
+                <input type="text" class="form-control" name="classname"
+                   placeholder="Class Name (Optional)" value="{{ studylog.classname  }}">
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+                <div class="col"><p><!-- space --></p></div>
+        </div>
+
+        <div class="row align-items-center" style="margin-bottom: 5%;">
+            <div class="col-1"></div>
+            <div class="col">
+                <label for="number"><b>COMMENTS :</b></label>
+            </div>
+
+            <div class="col">
+                <input type="text" class="form-control" name="comment"
+                   placeholder="Comment (Optional)" value="{{ studylog.comment  }}">
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <button type="submit" class="btn btn-dark btn-lg" style="margin-bottom: 5%;">Submit</button>
     </form>
+    </div>
+    <div class="row"><p></p></div>
+    <div class="row align-items-center">
+        <div class="col">
+            <a href="/index">
+                <button type="button btn" class="btn btn-secondary">
+                    RETURN TO HOME PAGE
+                </button>
+            </a>
+        </div>
+
+        <div class="col">
+            <a href="/view_classes">
+                <button type="button btn" class="btn btn-secondary">
+                    MY CLASSES
+                </button>
+            </a>
+        </div>
     </div>
 
 {% endblock %}

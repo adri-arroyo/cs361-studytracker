@@ -2,13 +2,15 @@
 <!-- <h3 class="title">{% block title %} Study Log Table {% endblock %}</h3> -->
     <div class="content">
         <!-- DEFINE TABLE HEADERS -->
-        <div class="row" style="background-color: #74512d; color: white">
-                <div class="col" style="border: 5px solid #4e1f00;">CLASS NAME</div>
-                <div class="col" style="border: 5px solid #4e1f00;">HOURS SPENT</div>
-                <div class="col" style="border: 5px solid #4e1f00;">DATE</div>
-                <div class="col" style="border: 5px solid #4e1f00;">COMMENT</div>
-                <div class="col" style="border: 5px solid #4e1f00;">ACTION</div>
-        </div>
+         <b>
+            <div class="row" style="background-color: #74512d; color: white">
+                    <div class="col" style="border: 5px solid #4e1f00;">CLASS NAME</div>
+                    <div class="col" style="border: 5px solid #4e1f00;">HOURS SPENT</div>
+                    <div class="col" style="border: 5px solid #4e1f00;">DATE</div>
+                    <div class="col" style="border: 5px solid #4e1f00;">COMMENT</div>
+                    <div class="col" style="border: 5px solid #4e1f00;">ACTION</div>
+            </div>
+        </b>
         {% for studylogentry in studylog %}
         <div class="row" style="background-color: white;">
                 <div class="col" style="border: 5px solid #4e1f00;">{{ studylogentry.classname }}</div>
@@ -18,15 +20,16 @@
                 <div class="col" style="border: 5px solid #4e1f00;">
                     <div>
                         <a href="{{ url_for('edit', log_id=studylogentry.id) }}">
-                            <button type="button" class="btn btn-outline-primary btn-sm">
+                            <button type="button" class="btn btn-outline-dark btn-sm"
+                            style="border: 0px;">
                                 <span class="material-symbols-outlined">edit</span>
                             </button> 
                         </a>
-                        
                             <form method="POST" action="{{ url_for('delete', log_id=studylogentry.id) }}" style="display: inline;">
 
-                            <button type="submit" class="btn btn-outline-secondary btn-sm" onclick="return confirm('Are you sure you want to remove this entry? Confirmation of this action entry will result in the loss of the study hours data.')">
-                                
+                            <button type="submit" class="btn btn-outline-dark btn-sm" 
+                            style="border: 0px;"
+                            onclick="return confirm('Are you sure you want to remove this entry? Confirmation of this action entry will result in the loss of the study hours data.')">
                                     <span class="material-symbols-outlined">delete</span>
                             </button>
                             </form>
@@ -37,3 +40,5 @@
         </div>
         {% endfor %}
     </div>
+
+    
