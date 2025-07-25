@@ -37,42 +37,50 @@ date_format = "%Y-%m-%d"
 @app.route('/index')
 def index():
     studylog = StudyLog.query.all()
-    return render_template('index.html', studylog=studylog, title='Home')
+    classnames = StudyLog.query.with_entities(StudyLog.classname).distinct().all()
+    classnames_list = [classname[0] for classname in classnames]
+    return render_template('index.html', studylog=studylog, classnames=classnames_list, title='Home')
 
 @app.route('/index/sort_by_date_desc', methods=('GET', 'POST'))
 def sort_by_date_desc():
     studylog = StudyLog.query.order_by(StudyLog.date.desc()).all()
-    return render_template('index.html', studylog=studylog, title='Home')
+    classnames = StudyLog.query.with_entities(StudyLog.classname).distinct().all()
+    classnames_list = [classname[0] for classname in classnames]
+    return render_template('index.html', studylog=studylog, classnames=classnames_list, title='Home')
 
 @app.route('/index/sort_by_date_asc', methods=('GET', 'POST'))
 def sort_by_date_asc():
     studylog = StudyLog.query.order_by(StudyLog.date.asc()).all()
-    return render_template('index.html', studylog=studylog, title='Home')
+    classnames = StudyLog.query.with_entities(StudyLog.classname).distinct().all()
+    classnames_list = [classname[0] for classname in classnames]
+    return render_template('index.html', studylog=studylog, classnames=classnames_list, title='Home')
 
 @app.route('/index/sort_by_hrs_desc', methods=('GET', 'POST'))
 def sort_by_hrs_desc():
     studylog = StudyLog.query.order_by(StudyLog.studyhours.desc()).all()
-    return render_template('index.html', studylog=studylog, title='Home')
+    classnames = StudyLog.query.with_entities(StudyLog.classname).distinct().all()
+    classnames_list = [classname[0] for classname in classnames]
+    return render_template('index.html', studylog=studylog, classnames=classnames_list, title='Home')
 
 @app.route('/index/sort_by_hrs_asc', methods=('GET', 'POST'))
 def sort_by_hrs_asc():
     studylog = StudyLog.query.order_by(StudyLog.studyhours.asc()).all()
-    return render_template('index.html', studylog=studylog, title='Home')
+    classnames = StudyLog.query.with_entities(StudyLog.classname).distinct().all()
+    classnames_list = [classname[0] for classname in classnames]
+    return render_template('index.html', studylog=studylog, classnames=classnames_list, title='Home')
 
-@app.route('/index/sort_by/<int:class_name>', methods=('GET', 'POST'))
+@app.route('/index/sort_by/<class_name>', methods=('GET', 'POST'))
 def sort_by_class_name(class_name):
-    studylog = StudyLog.query.get_or_404(class_name)
+    # studylog = StudyLog.query.get_or_404(class_name)
 
-    if request.method == 'POST':
-        studylog = StudyLog.query.filter_by(classname=class_name).all()
-        return render_template('index.html', studylog=studylog, title='Home')
+
+    studylog = StudyLog.query.filter_by(classname=class_name).all()
+    classnames = StudyLog.query.with_entities(StudyLog.classname).distinct().all()
+    classnames_list = [classname[0] for classname in classnames]
+    return render_template('index.html', studylog=studylog, classnames=classnames_list, title='Home')
     
-    studylog = StudyLog.query.all()
-    return render_template('index.html', studylog=studylog)
-
-
-
-
+    # studylog = StudyLog.query.all()
+    # return render_template('index.html', studylog=studylog)
 
 @app.route('/submit_hours', methods=('GET', 'POST'))
 def create():

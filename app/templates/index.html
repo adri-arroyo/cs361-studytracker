@@ -58,7 +58,7 @@
     
     <div class="row align-items-center">
         <div class="col" >
-            Filter by:
+            <b>Filter by: </b>
             <a href="/index/sort_by_hrs_asc">
                 <button type="button" class="btn btn-secondary">
                     LEAST HOURS SPENT
@@ -95,24 +95,39 @@
         <p><!-- space --></p>
     </div> 
 
-    <div class="row align-items-center">
-        <div class="col">
+    <div class="row">
+    <div class="col">
             <a href="/submit_hours">
-                <button type="button btn-lg" class="btn btn-warning btn-lg"
-                >
+                <button type="button btn-lg" class="btn btn-warning btn-lg">
                     (+) LOG STUDY HOURS
                 </button>
             </a>
-    </div>
+    
 
     <div class="row">
         <p><!-- space --></p>
     </div> 
 
-    <div class="row align-items-center">
+    <div class="row">
         <div class="col" style="background-color: #4e1f00; color: white"><h3 style="margin: auto; padding-top: 1%; padding-bottom: 1%;">Current Classes</h3></div>
     </div>
-    <div class="row align-items-center">
-        <div class="col" style="background-color: #f0e8e0"> CLASS 1 / CLASS 2</div>
+    <div class="row">
+        <div class="col" style="background-color: #f0e8e0; border: 5px solid #4e1f00;"> 
+            <p></p>
+            {% for classname in classnames %}
+                <a href="{{ url_for('sort_by_class_name', class_name=classname) }}">
+                    <button type="button" class="btn btn-dark">
+                        {{ classname }}
+                    </button>
+                </a>
+            {% endfor %}
+            <a href="/index">
+                <button type="button" class="btn btn-dark">
+                    ALL CLASSES
+                </button>
+            </a>
+            <p></p>
+        </div>
+    </div>
     </div>
 {% endblock %}
