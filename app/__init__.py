@@ -4,7 +4,8 @@ from flask import Flask, render_template, request, url_for, redirect, jsonify
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 import requests
-from werkzeug.utils import secure_filename
+import matplotlib.pyplot as plt
+
 from sqlalchemy.sql import func
 
 
@@ -194,21 +195,17 @@ def calculate_total_hrs():
 
 # Microservice C
 @app.route('/study_graph', methods=('GET', 'POST'))
-def upload_image():
-    if 'image' not in request.files:
-        return jsonify({'error': 'No image part in the request'}), 400
+def generate_graph():
+    print("Sending Study Graph Request to Microservice C...")
+    response = requests.post('http://127.0.0.1:8000/view_graph')
 
-    file = request.files['image']
-
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
-
-    if file:
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(filepath)
-
-        return render_template('study_graph.html')
+    if response.status_code == 200:
+        with open("received_graph.png", "wb") as f:
+            f.write(response.content)
+        print("Received Study Graph from Microservice C and saved as received_graph.png")
+    else:
+        print(f"Error: {response.status_code}")
+    return render_template('study_graph.html')
 
 
 
