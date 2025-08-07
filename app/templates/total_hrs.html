@@ -46,7 +46,7 @@
             </a>
 
             {% for classname in classnames %}
-            <a href="{{ url_for('calculate_total_hrs_by_class_name', class_name=classname) }}">
+            <a href="{{ url_for('calculate_total_hrs', class_name=classname) }}">
                 <button type="submit" name="classname_val" value="{{ classname }}" class="btn btn-dark">
                     {{ classname }}
                 </button>

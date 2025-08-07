@@ -29,32 +29,33 @@
 {% block content %}
 
     <div class="row" style="background-color: #4e1f00; color: white; ">
-        <h1 style="margin: auto; padding-top: 1%; padding-bottom: 1%;">{% block title %} Total Study Hour Calculator{% endblock %}</h1>
+        <h1 style="margin: auto; padding-top: 1%; padding-bottom: 1%;">{% block title %}Total Study Hour Calculator{% endblock %}</h1>
         </div>
     <div class="row" style="border: 8px solid #4e1f00; background-color: #f0e8e0;">
         <p></p>
-            <h1><i> Welcome to the Maths page!</i></h1>
-            <p>Logic shapes every choice of our daily lives.<br>
-            Logical thinking enables someone to learn and
-            make decisions that affect their way of life. !</p>
+            <h1>Keep Learning Maths!</h1>
+            <h2>Total Hours is : {{totalhrs}}</h2>
+
             <br><br>
+
+            <form method="POST" action="/total_hrs">
+            <a href="{{ url_for('calculate_total_hrs') }}">
+                <button type="submit" name="classname_val" value="" class="btn btn-dark">
+                    All Classes
+                </button>
+            </a>
+
             {% for classname in classnames %}
-            <a href="{{ url_for('sort_by_class_name', class_name=classname) }}">
-                <button type="button" class="btn btn-dark">
+            <a href="{{ url_for('calculate_total_hrs', class_name=classname) }}">
+                <button type="submit" name="classname_val" value="{{ classname }}" class="btn btn-dark">
                     {{ classname }}
                 </button>
             </a>
             {% endfor %}
+            </form>
+
             <br><br>
 
-
-
-
-            <form method="POST" action="/total_hrs">
-                <label>Enter a number: </label>
-                <input type="text" name="num">
-                <input type="submit" value="Calculate">
-            </form>
         <p></p>
     </div>
     <div class="row"><p></p></div>
@@ -77,3 +78,4 @@
     </div>
 
 {% endblock %}
+

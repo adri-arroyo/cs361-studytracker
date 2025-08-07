@@ -1,4 +1,4 @@
-body {
+/* body {
     font-family: Arial, sans-serif;
     background-color: #bc5252;
     color: #ff6c6c;
@@ -6,4 +6,8 @@ body {
 
 h3 {
     color: #0056b3;
+} */
+
+a {
+    text-decoration: none;
 }

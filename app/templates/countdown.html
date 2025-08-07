@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+    <div class="row" style="background-color: #4e1f00; color: white;">
+        <h3 style="margin: auto; padding-top: 3%; padding-bottom: 2%;">HOW TO <br> ADD STUDY HOURS</h3>
+    </div>
+
+    <div class="row" style="border: 8px solid #4e1f00; background-color: #f0e8e0; text-align: justify;">
+        <p> <br>Add hours to your <b>Study Log</b> by completing all the <b>required fields</b> on the page. 
+            Click the <b>Submit</b> button once you are finished.<br><br>
+
+
+            The Class Name and Comment fields are <b><i>OPTIONAL</i></b>.<br><br>
+
+            Completing the <b>Class Name</b> field will allow you to categorize your entries 
+            per class that you are taking.<br><br>
+
+
+            <i>Don't see the name of one of your classes? Head over to the "All Classes" menu to
+            add the class.</i>
+        </p>
+    </div>
+    
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="row" style="background-color: #4e1f00; color: white; ">
+        <h1 style="margin: auto; padding-top: 1%; padding-bottom: 1%;">{% block title %} Countdown Calculator{% endblock %}</h1>
+        </div>
+    <div class="row" style="border: 8px solid #4e1f00; background-color: #f0e8e0;">
+        <p></p>
+        <br>
+        <p></p>
+    <form method="POST" action="/countdown">
+        <div class="row align-items-center">
+            <div class="col-1"></div>
+            <div class="col">
+                <label for="number"><b>ENTER A FUTURE DATE :<b style="color: red">*</b></b></label>
+            </div>
+
+            <div class="col">
+                <input type="date" class="form-control" name="targetDate" placeholder="YYYY/MM/DD" required>
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        <div class="row">
+                <div class="col"><p><!-- space --></p></div>
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-1"></div>
+            <div class="col">
+                <label for="date"><b>DISPLAY FORMAT :<b style="color: red">*</b></b></label>
+            
+            </div>
+
+            <div class="col">
+                <select name="displayFormat" class="form-control" required>
+                    <option name="displayFormat" value="days">Days</option>
+                    <option name="displayFormat" value="weeks">Weeks</option>
+                    <option name="displayFormat" value="months">Months</option>
+                    <option name="displayFormat" value="combo">Combo</option>
+                </select>
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        <div class="row">
+                <div class="col"><p><!-- space --></p></div>
+        </div>
+
+
+
+
+        <p style="color: red">*This field is required.</p>
+
+        <h2>{{response_data}}</h2>
+        <br>
+        <button type="submit" class="btn btn-dark btn-lg" style="margin-bottom: 5%;">SUBMIT</button>
+    </form>
+    </div>
+    <div class="row"><p></p></div>
+    <div class="row align-items-center">
+        <div class="col">
+            <a href="/index">
+                <button type="button btn" class="btn btn-secondary">
+                    RETURN TO HOME PAGE
+                </button>
+            </a>
+        </div>
+
+        <div class="col">
+            <a href="/view_classes">
+                <button type="button btn" class="btn btn-secondary">
+                    MY CLASSES
+                </button>
+            </a>
+        </div>
+    </div>
+
+{% endblock %}

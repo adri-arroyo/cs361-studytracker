@@ -1,11 +1,13 @@
 from datetime import datetime
 import os
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, jsonify
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 import requests
-
+from werkzeug.utils import secure_filename
 from sqlalchemy.sql import func
+
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -129,13 +131,26 @@ def delete(log_id):
 
 
 
-
-
-
-
 # !------ MICROSERVICE ROUTES --------!
 
 # Microservice A
+@app.route('/countdown', methods=('GET', 'POST'))
+def calculate_countdown():
+    if request.method == 'POST':
+        print("Sending data to Microservice A...")
+
+        target_date = request.form['targetDate']
+        display_format = request.form['displayFormat']
+
+        data = {'target_date': target_date, 'display_format': display_format}
+        response = requests.post('http://127.0.0.1:6000/process', json=data)
+
+        response_data = response.text
+
+        print(f"Received from Microservice A: '{response_data}'")
+
+        return render_template('countdown.html', response_data=response_data)
+    return render_template('countdown.html')
 
 # Microservice B
 @app.route('/total_hrs', methods=('GET', 'POST'))
@@ -144,7 +159,7 @@ def calculate_total_hrs():
     classnames_list = [classname[0] for classname in classnames]
 
     if request.method == 'POST':
-        print("Sending Total Study Hours to Microservice A...")
+        print("Sending Total Study Hours to Microservice B...")
         log_classname = request.form.get('classname_val')
 
         if len(log_classname) == 0:
@@ -152,7 +167,6 @@ def calculate_total_hrs():
             study_hours_list = [studyhours[0] for studyhours in study_hours]
         
         else:
-            print(log_classname)
             study_hours = StudyLog.query.filter_by(classname=log_classname).with_entities(StudyLog.studyhours).all()
             study_hours_list = [studyhours[0] for studyhours in study_hours]
 
@@ -169,54 +183,73 @@ def calculate_total_hrs():
 
         response_data = response.json()
         total_hrs = response_data["total_hr_sum"]
-        print(total_hrs)
+        print(f"Received total hours from Microservice B: {total_hrs}")
 
         # Example GET request
         # response = requests.get('http://127.0.0.1:7000/api/resource')
         # print(response.text)
 
+        return render_template('total_hrs.html', totalhrs=total_hrs, classnames=classnames_list)
+    return render_template('total_hrs.html', classnames=classnames_list)
 
-        return render_template('answer.html', totalhrs=total_hrs, classnames=classnames_list)
-    return render_template('answer.html', classnames=classnames_list)
+# Microservice C
+@app.route('/study_graph', methods=('GET', 'POST'))
+def upload_image():
+    if 'image' not in request.files:
+        return jsonify({'error': 'No image part in the request'}), 400
 
-# Microservice B
-@app.route('/total_hrs', methods=('GET', 'POST'))
-def calculate_total_hrs():
-    classnames = StudyLog.query.with_entities(StudyLog.classname).distinct().all()
-    classnames_list = [classname[0] for classname in classnames]
+    file = request.files['image']
 
-    if request.method == 'POST':
-        print("Sending Total Study Hours to Microservice A...")
-        log_classname = request.form.get('classname_val')
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
 
-        if len(log_classname) == 0:
-            study_hours = StudyLog.query.with_entities(StudyLog.studyhours).all()
-            study_hours_list = [studyhours[0] for studyhours in study_hours]
+    if file:
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+
+        return render_template('study_graph.html')
+
+
+
+
+
+# def calculate_total_hrs():
+#     classnames = StudyLog.query.with_entities(StudyLog.classname).distinct().all()
+#     classnames_list = [classname[0] for classname in classnames]
+
+#     if request.method == 'POST':
+#         print("Sending Total Study Hours to Microservice A...")
+#         log_classname = request.form.get('classname_val')
+
+#         if len(log_classname) == 0:
+#             study_hours = StudyLog.query.with_entities(StudyLog.studyhours).all()
+#             study_hours_list = [studyhours[0] for studyhours in study_hours]
         
-        else:
-            print(log_classname)
-            study_hours = StudyLog.query.filter_by(classname=log_classname).with_entities(StudyLog.studyhours).all()
-            study_hours_list = [studyhours[0] for studyhours in study_hours]
+#         else:
+#             print(log_classname)
+#             study_hours = StudyLog.query.filter_by(classname=log_classname).with_entities(StudyLog.studyhours).all()
+#             study_hours_list = [studyhours[0] for studyhours in study_hours]
 
-        for i, study_hours in enumerate(study_hours_list):
-            study_hours_list[i] = str(study_hours)
+#         for i, study_hours in enumerate(study_hours_list):
+#             study_hours_list[i] = str(study_hours)
 
-        # Example GET request
-        # response = requests.get('http://127.0.0.1:7000/api/resource')
-        # print(response.text)
+#         # Example GET request
+#         # response = requests.get('http://127.0.0.1:7000/api/resource')
+#         # print(response.text)
 
-        # Example POST request with JSON data
-        data = {'total_hrs': study_hours_list}
-        response = requests.post('http://127.0.0.1:7000/calculate_hrs', json=data)
+#         # Example POST request with JSON data
+#         data = {'total_hrs': study_hours_list}
+#         response = requests.post('http://127.0.0.1:7000/calculate_hrs', json=data)
 
-        response_data = response.json()
-        total_hrs = response_data["total_hr_sum"]
-        print(total_hrs)
+#         response_data = response.json()
+#         total_hrs = response_data["total_hr_sum"]
+#         print(total_hrs)
 
-        # Example GET request
-        # response = requests.get('http://127.0.0.1:7000/api/resource')
-        # print(response.text)
+#         # Example GET request
+#         # response = requests.get('http://127.0.0.1:7000/api/resource')
+#         # print(response.text)
 
 
-        return render_template('answer.html', totalhrs=total_hrs, classnames=classnames_list)
-    return render_template('answer.html', classnames=classnames_list)
+#         return render_template('answer.html', totalhrs=total_hrs, classnames=classnames_list)
+#     return render_template('answer.html', classnames=classnames_list)
