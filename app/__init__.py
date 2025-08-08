@@ -164,6 +164,7 @@ def calculate_total_hrs():
         log_classname = request.form.get('classname_val')
 
         if len(log_classname) == 0:
+            log_classname = "ALL CLASSES"
             study_hours = StudyLog.query.with_entities(StudyLog.studyhours).all()
             study_hours_list = [studyhours[0] for studyhours in study_hours]
         
@@ -174,11 +175,6 @@ def calculate_total_hrs():
         for i, study_hours in enumerate(study_hours_list):
             study_hours_list[i] = str(study_hours)
 
-        # Example GET request
-        # response = requests.get('http://127.0.0.1:7000/api/resource')
-        # print(response.text)
-
-        # Example POST request with JSON data
         data = {'total_hrs': study_hours_list}
         response = requests.post('http://127.0.0.1:7000/calculate_hrs', json=data)
 
@@ -186,12 +182,24 @@ def calculate_total_hrs():
         total_hrs = response_data["total_hr_sum"]
         print(f"Received total hours from Microservice B: {total_hrs}")
 
-        # Example GET request
-        # response = requests.get('http://127.0.0.1:7000/api/resource')
-        # print(response.text)
+        return render_template('total_hrs.html', totalhrs=total_hrs, classnames=classnames_list, selectedclass=log_classname)
+    
+    else:
+        log_classname = "ALL CLASSES"
+        study_hours = StudyLog.query.with_entities(StudyLog.studyhours).all()
+        study_hours_list = [studyhours[0] for studyhours in study_hours]
+        
+        for i, study_hours in enumerate(study_hours_list):
+            study_hours_list[i] = str(study_hours)
 
-        return render_template('total_hrs.html', totalhrs=total_hrs, classnames=classnames_list)
-    return render_template('total_hrs.html', classnames=classnames_list)
+        data = {'total_hrs': study_hours_list}
+        response = requests.post('http://127.0.0.1:7000/calculate_hrs', json=data)
+
+        response_data = response.json()
+        total_hrs = response_data["total_hr_sum"]
+        print(f"Received total hours from Microservice B: {total_hrs}")
+
+    return render_template('total_hrs.html', classnames=classnames_list, totalhrs=total_hrs, selectedclass=log_classname)
 
 # Microservice C
 @app.route('/study_graph', methods=('GET', 'POST'))
@@ -207,10 +215,6 @@ def generate_graph():
             selected_classes.append(key)
         print(selected_classes)
 
-        # if len(log_classname) == 0:
-        #     study_hours = StudyLog.query.with_entities(StudyLog.studyhours).all()
-        #     study_hours_list = [studyhours[0] for studyhours in study_hours]
-        
         for selected_class in selected_classes:
 
             study_hours = StudyLog.query.filter_by(classname=selected_class).with_entities(StudyLog.studyhours).all()
@@ -255,46 +259,40 @@ def generate_graph():
         print(f"Error: {response.status_code}")
     return render_template('study_graph.html', classnames=classnames_list)
 
+# Microservice C
+@app.route('/study_goals', methods=('GET', 'POST'))
+def goal_progress():
+    goal_info_dict = {}
 
+    classnames = StudyLog.query.with_entities(StudyLog.classname).distinct().all()
+    classnames_list = [classname[0] for classname in classnames]
 
+    if request.method == 'POST':
+        for key, value in request.form.items():
+            goal_info_dict[key] = value
 
+        selected_class = goal_info_dict['class_name']
+        study_hours = StudyLog.query.filter_by(classname=selected_class).with_entities(StudyLog.studyhours).all()
+        study_hours_list = [studyhours[0] for studyhours in study_hours]
 
-# def calculate_total_hrs():
-#     classnames = StudyLog.query.with_entities(StudyLog.classname).distinct().all()
-#     classnames_list = [classname[0] for classname in classnames]
+        for i, study_hours in enumerate(study_hours_list):
+            study_hours_list[i] = str(study_hours)
 
-#     if request.method == 'POST':
-#         print("Sending Total Study Hours to Microservice A...")
-#         log_classname = request.form.get('classname_val')
+        data = {'total_hrs': study_hours_list}
+        response = requests.post('http://127.0.0.1:7000/calculate_hrs', json=data)
 
-#         if len(log_classname) == 0:
-#             study_hours = StudyLog.query.with_entities(StudyLog.studyhours).all()
-#             study_hours_list = [studyhours[0] for studyhours in study_hours]
-        
-#         else:
-#             print(log_classname)
-#             study_hours = StudyLog.query.filter_by(classname=log_classname).with_entities(StudyLog.studyhours).all()
-#             study_hours_list = [studyhours[0] for studyhours in study_hours]
+        response_data = response.json()
+        total_hrs = response_data["total_hr_sum"]
 
-#         for i, study_hours in enumerate(study_hours_list):
-#             study_hours_list[i] = str(study_hours)
+        goal_info_dict["study_hrs"] = str(total_hrs)
 
-#         # Example GET request
-#         # response = requests.get('http://127.0.0.1:7000/api/resource')
-#         # print(response.text)
+        print("Sending Study Goal Calculator Request to Microservice D...")
+        response = requests.post('http://127.0.0.1:9000/calculate_progress', json=goal_info_dict)
 
-#         # Example POST request with JSON data
-#         data = {'total_hrs': study_hours_list}
-#         response = requests.post('http://127.0.0.1:7000/calculate_hrs', json=data)
+        response_data = response.json()
+        goal_progress = response_data["goal_progress"]
+        print(f"Received study goal progress from Microservice D: {goal_progress}% Completed")
 
-#         response_data = response.json()
-#         total_hrs = response_data["total_hr_sum"]
-#         print(total_hrs)
-
-#         # Example GET request
-#         # response = requests.get('http://127.0.0.1:7000/api/resource')
-#         # print(response.text)
-
-
-#         return render_template('answer.html', totalhrs=total_hrs, classnames=classnames_list)
-#     return render_template('answer.html', classnames=classnames_list)
+        return render_template('study_goals.html', classnames=classnames_list, selectedclass=selected_class, goalprogress=goal_progress, classname=goal_info_dict['class_name'])
+    
+    return render_template('study_goals.html', classnames=classnames_list, goalprogress=-1)

@@ -7,19 +7,13 @@
     </div>
 
     <div class="row" style="border: 8px solid #4e1f00; background-color: #f0e8e0; text-align: justify;">
-        <p> <br>Edit the information you wish to change and click the <b>Save Changes</b>
-            button once you are finished to save your changes.<br><br>
+        <p> <br>Have you ever wondered <b>how much time your classes are consuming</b>?
+            Now you can obtain an exact estimate of how much time you've spent in each or all of your classes 
+            by using the <b>Total Study Hours Calculator</b>
 
-
-            The Class Name and Comment fields are <b><i>OPTIONAL</i></b>.<br><br>
-
-            Completing the <b>Class Name</b> field will allow you to categorize your entries 
-            per class that you are taking. On the other hand, removing the class name will 
-            cause the entry to no longer appear when filtering the Study Log for that class.<br><br>
-
-
-            <i>Don't see the name of one of your classes? Head over to the "All Classes" menu to
-            add the class.</i>
+            <br><br>
+            Select the class you'd like to view your Total Study Hours for, or if you'd prefer
+            to see how much time you've studied in general, select the "ALL CLASSES" option.
         </p>
     </div>
     
@@ -34,7 +28,9 @@
     <div class="row" style="border: 8px solid #4e1f00; background-color: #f0e8e0;">
         <p></p>
             <br>
-            <h4>Select which class you'd like to <br>view your total study hours for:</h4>
+            <center><p style="font-size: larger;">Select which class you'd like 
+                to view your total study hours for:</p></center>
+            <br><br>
             <form method="POST" action="/total_hrs">
             <a href="{{ url_for('calculate_total_hrs') }}">
                 <button type="submit" name="classname_val" value="" class="btn btn-dark">
@@ -52,7 +48,7 @@
             </form>
 
             <br><br><br>
-            <h2>You have spent a total of {{totalhrs}} hours studying for {{ classname_val }}.</h2>
+            <h2>You have spent a total of <b>{{totalhrs}}</b> hours <br>studying for <b>{{ selectedclass }}</b>.</h2>
             <br><br><br>
 
         <p></p>

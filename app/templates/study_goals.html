@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+    <div class="row" style="background-color: #4e1f00; color: white;">
+        <h3 style="margin: auto; padding-top: 3%; padding-bottom: 2%;">HOW TO USE</h3>
+    </div>
+
+    <div class="row" style="border: 8px solid #4e1f00; background-color: #f0e8e0; text-align: justify;">
+        <p> <br> Setting up goals is a good alternative for when you want to <b>keep yourself motivated while studying</b>. 
+            Throughout goals you can measure your progress and determine if you're keeping a good pace or if you need to readjust your study time.
+
+            See how far along you are in your study goals with the <b>Study Goal Progress Calculator</b>.
+
+            <br><br>
+            Select the class you'd like to calculate your Study Goal for. 
+            Make sure you complete all the <b>required fields</b> on the page. 
+            Click the <b>Submit</b> button once you are finished.<br>
+        </p>
+    </div>
+    
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="row" style="background-color: #4e1f00; color: white; ">
+        <h2 style="margin: auto; padding-top: 1%; padding-bottom: 1%;">{% block title %} STUDY GOALS PROGRESS CALCULATOR{% endblock %}</h2>
+        </div>
+    <div class="row" style="border: 8px solid #4e1f00; background-color: #f0e8e0;">
+        <p></p><center>
+        <br>{% if goalprogress == 100 %}
+                <h2>Good job!</h2>
+                   <h4>Your Study Goal for {{ classname }} has been completed.</h4>
+                <div class="progress" style="height: 30px; max-width: 75%; background-color: #fff;">
+                    <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: {{ goalprogress }}%;" aria-valuenow="{{ goalprogress }}" aria-valuemin="0" aria-valuemax="100">{{ goalprogress }}%</div>
+                </div><br><br></h1>
+            {% elif goalprogress > -1 %}
+                <h2>Keep up the good work!</h2>
+                <h4>Your Study Goal for {{ classname }} is {{ goalprogress }}% completed.</h4>
+                <div class="progress" style="height: 30px; max-width: 75%; background-color: #fff;">
+                    <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar" style="width: {{ goalprogress }}%;" aria-valuenow="{{ goalprogress }}" aria-valuemin="0" aria-valuemax="100">{{ goalprogress }}%</div>
+                </div><br><br>
+            {% endif %}
+            </center>
+    <form method="POST" action="/study_goals">
+        <div class="row align-items-center">
+            <div class="col-1"></div>
+            <div class="col">
+                <label for="number"><b>MINIMUM STUDY HOURS REQUIRED<br>(IN INCREMENTS OF 0.25):<b style="color: red">*</b></b></label>
+            </div>
+
+            <div class="col">
+                <input type="number" class="form-control" step="0.25" min="0" name="goal_hours"
+                   placeholder="e.g. 3.25" required>
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        <div class="row">
+                <div class="col"><p><!-- space --></p></div>
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-1"></div>
+            <div class="col">
+                <label for="classname"><b>CLASS NAME :<b style="color: red">*</b></b></label>
+            
+            </div>
+
+            <div class="col">
+                <select name="class_name" class="form-control" required>
+                    {% for classname in classnames %}
+                    <option name="{{ classname }}" value="{{ classname }}">{{ classname }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        <div class="row">
+                <div class="col"><p><!-- spacedgfg --></p></div>
+        </div>
+
+        <p style="color: red">*This field is required.</p>
+
+        <h2>{{response_data}}</h2>
+        <br>
+        <button type="submit" class="btn btn-dark btn-lg" style="margin-bottom: 5%;">SUBMIT</button>
+    </form>
+    </div>
+    <div class="row"><p></p></div>
+    <div class="row align-items-center">
+        <div class="col">
+            <a href="/index">
+                <button type="button btn" class="btn btn-secondary">
+                    RETURN TO HOME PAGE
+                </button>
+            </a>
+        </div>
+
+        
+    </div>
+
+{% endblock %}
