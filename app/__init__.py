@@ -196,16 +196,64 @@ def calculate_total_hrs():
 # Microservice C
 @app.route('/study_graph', methods=('GET', 'POST'))
 def generate_graph():
+    graph_info_dict = {}
+
+    classnames = StudyLog.query.with_entities(StudyLog.classname).distinct().all()
+    classnames_list = [classname[0] for classname in classnames]
+
+    if request.method == 'POST':
+        selected_classes = []
+        for key, value in request.form.items():
+            selected_classes.append(key)
+        print(selected_classes)
+
+        # if len(log_classname) == 0:
+        #     study_hours = StudyLog.query.with_entities(StudyLog.studyhours).all()
+        #     study_hours_list = [studyhours[0] for studyhours in study_hours]
+        
+        for selected_class in selected_classes:
+
+            study_hours = StudyLog.query.filter_by(classname=selected_class).with_entities(StudyLog.studyhours).all()
+            study_hours_list = [studyhours[0] for studyhours in study_hours]
+
+            for i, study_hours in enumerate(study_hours_list):
+                study_hours_list[i] = str(study_hours)
+
+            data = {'total_hrs': study_hours_list}
+            response = requests.post('http://127.0.0.1:7000/calculate_hrs', json=data)
+
+            response_data = response.json()
+            total_hrs = response_data["total_hr_sum"]
+
+            graph_info_dict[selected_class] = str(total_hrs)
+
+    else:
+        for selected_class in classnames_list:
+
+            study_hours = StudyLog.query.filter_by(classname=selected_class).with_entities(StudyLog.studyhours).all()
+            study_hours_list = [studyhours[0] for studyhours in study_hours]
+
+            for i, study_hours in enumerate(study_hours_list):
+                study_hours_list[i] = str(study_hours)
+
+            data = {'total_hrs': study_hours_list}
+            response = requests.post('http://127.0.0.1:7000/calculate_hrs', json=data)
+
+            response_data = response.json()
+            total_hrs = response_data["total_hr_sum"]
+
+            graph_info_dict[selected_class] = str(total_hrs)
+
     print("Sending Study Graph Request to Microservice C...")
-    response = requests.post('http://127.0.0.1:8000/view_graph')
+    response = requests.post('http://127.0.0.1:8000/view_graph', json=graph_info_dict)
 
     if response.status_code == 200:
-        with open("received_graph.png", "wb") as f:
+        with open(r"app\static\images\received_graph.png", "wb") as f:
             f.write(response.content)
         print("Received Study Graph from Microservice C and saved as received_graph.png")
     else:
         print(f"Error: {response.status_code}")
-    return render_template('study_graph.html')
+    return render_template('study_graph.html', classnames=classnames_list)
 
 
 
