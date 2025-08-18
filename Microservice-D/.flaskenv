@@ -1,0 +1,4 @@
+FLASK_APP=microservice-d.py
+FLASK_DEBUG = False
+FLASK_RUN_HOST="127.0.0.1"
+FLASK_RUN_PORT=9000

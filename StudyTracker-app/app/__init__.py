@@ -1,10 +1,9 @@
 from datetime import datetime
 import os
-from flask import Flask, render_template, request, url_for, redirect, jsonify
+from flask import Flask, render_template, request, url_for, redirect
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 import requests
-import matplotlib.pyplot as plt
 
 from sqlalchemy.sql import func
 
@@ -79,7 +78,6 @@ def sort_by_class_name(class_name):
     classnames = StudyLog.query.with_entities(StudyLog.classname).distinct().all()
     classnames_list = [classname[0] for classname in classnames]
     return render_template('index.html', studylog=studylog, classnames=classnames_list, title='Home')
-
 
 @app.route('/submit_hours', methods=('GET', 'POST'))
 def create():
@@ -259,7 +257,7 @@ def generate_graph():
         print(f"Error: {response.status_code}")
     return render_template('study_graph.html', classnames=classnames_list)
 
-# Microservice C
+# Microservice D
 @app.route('/study_goals', methods=('GET', 'POST'))
 def goal_progress():
     goal_info_dict = {}
